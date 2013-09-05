@@ -20,7 +20,7 @@ module SocketIO
   end
 
   class Client
-    VERSION = "0.0.2"
+    VERSION = "0.0.3"
 
     [:INT, :TERM].each do |sig|
       Signal.trap(sig) do
@@ -61,7 +61,7 @@ module SocketIO
         scheme = @uri.scheme == "https" ? "wss" : "ws"
         query = @uri.query.nil? ? "" : "?" + @uri.query
         @transport = WebSocket.new("#{scheme}://#{@uri.host}:#{@uri.port}/socket.io/1/websocket/#{@session_id}#{query}", origin: @uri.to_s)
-        @transport.send("1::#{@path}")
+        @transport.send("1::#{@path}") unless @path.blank?
       else
         raise "We only support WebSockets.. and this server doesnt like web sockets.. O NO!!"
       end
