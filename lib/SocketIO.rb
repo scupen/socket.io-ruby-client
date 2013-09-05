@@ -10,7 +10,8 @@ module SocketIO
     uri = URI(uri)
     options[:path] = uri.path
     # handshake
-    response = RestClient.get "#{uri.scheme}://#{uri.host}:#{uri.port}/socket.io/1/"
+    query = uri.query.nil? ? "" : "?" + uri.query
+    response = RestClient.get "#{uri.scheme}://#{uri.host}:#{uri.port}/socket.io/1/#{query}"
     response_array = response.split(':')
     response_array = [uri] + response_array << options
     cli = Client.new(*response_array)
